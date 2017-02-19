@@ -21,6 +21,7 @@ limitations under the License.
 
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controls the player's movement in virtual reality.
@@ -28,7 +29,9 @@ using System.Collections.Generic;
 [RequireComponent(typeof(CharacterController))]
 public class OVRPlayerController : MonoBehaviour
 {
-	/// <summary>
+    public GameObject plane;
+
+    /// <summary>
 	/// The rate acceleration during movement.
 	/// </summary>
 	public float Acceleration = 0.1f;
@@ -222,7 +225,10 @@ public class OVRPlayerController : MonoBehaviour
 		if (HaltUpdateMovement)
 			return;
 
-		bool moveForward = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+        _handleMove();
+
+        bool moveForward = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)
+            || OVRInput.GetDown(OVRInput.Button.One) || _isForward;
 		bool moveLeft = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
 		bool moveRight = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
 		bool moveBack = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
@@ -461,5 +467,71 @@ public class OVRPlayerController : MonoBehaviour
 			transform.rotation = Quaternion.Euler(euler);
 		}
 	}
+
+    public void upPlayerAndPlane()
+    {
+        _step = 0.08f;
+        _run = true;
+    }
+
+    public void downPlayerAndPlane()
+    {
+        _step = -0.08f;
+        _run = true;
+    }
+
+    private bool _run = false;
+    private bool _isForward = false;
+    private int i = 0;
+    private float _step = 0;
+
+    void _handleMove()
+    {
+        if (Input.GetKey(KeyCode.PageUp) || OVRInput.Get(OVRInput.Button.DpadUp))
+        {
+            upPlayerAndPlane();
+        }
+
+        if (Input.GetKey(KeyCode.PageDown) || OVRInput.Get(OVRInput.Button.DpadDown))
+        {
+            downPlayerAndPlane();
+        }
+
+        if (Input.GetKey(KeyCode.F) || OVRInput.Get(OVRInput.Button.One))
+        {
+            _isForward = _isForward ? false : true;
+        }
+
+        if (Input.GetKey(KeyCode.N) || OVRInput.Get( OVRInput.Button.DpadRight))
+        {
+            SceneManager.LoadScene("EdumallVideoPlayer");
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (_run)
+        {
+            if (i < 75)
+            {
+                transform.position = new Vector3(
+                    transform.position.x,
+                    transform.position.y + _step,
+                    transform.position.z);
+                plane.transform.position = new Vector3(
+                    plane.transform.position.x,
+                    plane.transform.position.y + _step,
+                    plane.transform.position.z
+                );
+            }
+
+            i++;
+            if(i >= 75)
+            {
+                i = 0;
+                _run = false;
+            }
+        }
+    }
 }
 

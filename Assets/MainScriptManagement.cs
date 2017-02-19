@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
+
 public class MainScriptManagement : MonoBehaviour {
 
 	// Use this for initialization
@@ -22,7 +23,7 @@ public class MainScriptManagement : MonoBehaviour {
         AudioSource audio = GetComponent<AudioSource>();
         audio.Play();
         yield return new WaitForSeconds(2);
-        EditorSceneManager.LoadScene("Edumall");
+        SceneManager.LoadScene("Edumall");
         //cube.transform.eulerAngles += new Vector3(0, 0, 90);
     }
 }

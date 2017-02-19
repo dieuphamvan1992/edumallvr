@@ -1,21 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class portmanagement : MonoBehaviour {
     //private float ypos = 250;
     private float endposz = -30;
     private float moverate = 0.3f;
     public GameObject cube;
-    public AudioSource audio;
+    //public AudioSource audio;
  	void Start () {
         //ypos = this.gameObject.transform.position.x;
         //Debug.Log(ypos.ToString());
-        audio = GetComponent<AudioSource>();
+        //audio = GetComponent<AudioSource>();
+        //audio = GetComponent<AudioSource>();
+        //audio.Play();
         //audio.loop = true;
         //audio.Play();        
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {       
@@ -29,8 +31,6 @@ public class portmanagement : MonoBehaviour {
         {
             //this.gameObject.transform.eulerAngles += new Vector3(0, 0, 15);
             StartCoroutine(Rotehole());
-            audio = GetComponent<AudioSource>();
-            audio.Play();
         }
 	}
 
@@ -39,7 +39,7 @@ public class portmanagement : MonoBehaviour {
         //yield return new WaitForSeconds(2);
         //cube.transform.eulerAngles += new Vector3(0, 0, 90);
         yield return new WaitForSeconds(2);
-        EditorSceneManager.LoadScene("HumanGuild");
+        SceneManager.LoadScene("HumanGuild");
         //cube.transform.eulerAngles += new Vector3(0, 0, 90);
     }
 }
