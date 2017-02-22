@@ -1,19 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SlideShowController : MonoBehaviour
 {
 
-    public string[] slides;
+    public static string[] slideImages = {
+          "slide1",
+          "slide2",
+          "slide3",
+          "slide4",
+          "slide5",
+          "slide6",
+          "slideq1",
+          "slideq2",
+          "slideend1",
+          "slideend2",
+          "slideendend"
+    };
 
     private int slide_index = 0;
 
     void Start()
     {
-        if (slides.Length > 0 && false)
+        Debug.Log(slideImages.Length);
+        if (slideImages.Length > 0)
         {
-            GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load(slides[0]);
+            gameObject.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("slide1");
             slide_index++;
         }
     }
@@ -22,12 +36,27 @@ public class SlideShowController : MonoBehaviour
     {
         if (OVRInput.Get(OVRInput.Button.DpadDown) || Input.GetKey(KeyCode.RightArrow))
         {
-            if (slide_index < slides.Length)
+            if (slide_index < slideImages.Length)
             {
-                GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load(slides[slide_index]);
+                gameObject.GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load(slideImages[slide_index]);
                 slide_index += 1;
+            }
+
+            if (slide_index == slideImages.Length)
+            {
+                //SceneManager.LoadScene("Edumall");
+                StartCoroutine(Rotehole());
             }
             
         }
+    }
+
+    IEnumerator Rotehole()
+    {
+        //yield return new WaitForSeconds(2);
+        //cube.transform.eulerAngles += new Vector3(0, 0, 90);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Edumall");
+        //cube.transform.eulerAngles += new Vector3(0, 0, 90);
     }
 }

@@ -24,14 +24,21 @@ public class MovieTexture : Texture
 
 public class VideoPlayback : MonoBehaviour {
     public GameObject Sphere;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    IEnumerator Start()
+    {
         MovieTexture video360 = (MovieTexture)Sphere.GetComponent<Renderer>().material.mainTexture;
-        video360.loop = true;
         video360.Play();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        yield return new WaitForSeconds(45);
+        video360.Pause();
+        if (!video360.isPlaying)
+        {
+            SceneManager.LoadScene("Edumall");
+        }
+    }
+
+    void Update()
+    {
+        //Debug.Log("asdasdas");
     }
 }
